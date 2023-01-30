@@ -65,6 +65,7 @@ impl AppState {
     }
 
     fn solver(&self, x: f64, y: f64) -> u32 {
+        let max_iters = 900;
         let real = map(
             x,
             0.0,
@@ -85,24 +86,25 @@ impl AppState {
             real: 0.0,
             imag: 0.0,
         };
-        let mut iters = 100;
+        let mut iters = 0;
         if self.fast {
-            while iters > 0 {
+            while iters < max_iters {
                 z = z.square() + c;
-                iters -= 1;
+                iters += 1;
                 if z.mag() > 2.0 {
                     break;
                 }
             }
         } else {
-            while iters > 0 {
+            while iters < max_iters {
                 z = z.pow_fast(self.pow) + c;
-                iters -= 1;
+                iters += 1;
                 if z.mag() > 2.0 {
                     break;
                 }
             }
         }
+
         iters
     }
 
